@@ -1,0 +1,316 @@
+{
+  "generated_at": "2026-08-21T10:54:28Z",
+  "summary": {
+    "transactions": 500,
+    "volume_brl": 716675.71,
+    "alerts": 46,
+    "average_risk": 10.1
+  },
+  "risk_distribution": {
+    "low": 437,
+    "medium": 17,
+    "high": 9,
+    "critical": 37
+  },
+  "top_reasons": [
+    {
+      "reason": "new_device",
+      "count": 70
+    },
+    {
+      "reason": "high_amount",
+      "count": 41
+    },
+    {
+      "reason": "extreme_velocity",
+      "count": 34
+    },
+    {
+      "reason": "high_velocity",
+      "count": 28
+    },
+    {
+      "reason": "very_high_amount",
+      "count": 24
+    }
+  ],
+  "cities": [
+    {
+      "city": "Belo Horizonte",
+      "transactions": 100,
+      "volume_brl": 163887.75,
+      "alerts": 11
+    },
+    {
+      "city": "Curitiba",
+      "transactions": 107,
+      "volume_brl": 145710.39,
+      "alerts": 10
+    },
+    {
+      "city": "Recife",
+      "transactions": 107,
+      "volume_brl": 185985.5,
+      "alerts": 12
+    },
+    {
+      "city": "Rio de Janeiro",
+      "transactions": 97,
+      "volume_brl": 113373.1,
+      "alerts": 8
+    },
+    {
+      "city": "Sao Paulo",
+      "transactions": 89,
+      "volume_brl": 107718.97,
+      "alerts": 5
+    }
+  ],
+  "alerts": [
+    {
+      "transaction_id": "pix_6e3f683abf3c5140",
+      "occurred_at": "2026-08-21T00:33:24Z",
+      "sender_id": "acct_0027",
+      "receiver_id": "acct_0125",
+      "amount_brl": 18207.2,
+      "device_id": "dev_0034",
+      "city": "Curitiba",
+      "account_age_days": 17,
+      "transactions_last_hour": 20,
+      "is_new_device": true,
+      "risk_score": 100,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account",
+        "unusual_hour"
+      ]
+    },
+    {
+      "transaction_id": "pix_921704753d959e3f",
+      "occurred_at": "2026-08-21T00:39:54Z",
+      "sender_id": "acct_0064",
+      "receiver_id": "acct_0187",
+      "amount_brl": 13663.35,
+      "device_id": "dev_0048",
+      "city": "Sao Paulo",
+      "account_age_days": 10,
+      "transactions_last_hour": 19,
+      "is_new_device": true,
+      "risk_score": 100,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account",
+        "unusual_hour"
+      ]
+    },
+    {
+      "transaction_id": "pix_d9750f00d5aba8ae",
+      "occurred_at": "2026-08-21T04:02:22Z",
+      "sender_id": "acct_0027",
+      "receiver_id": "acct_0180",
+      "amount_brl": 15407.69,
+      "device_id": "dev_0174",
+      "city": "Recife",
+      "account_age_days": 5,
+      "transactions_last_hour": 14,
+      "is_new_device": true,
+      "risk_score": 100,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account",
+        "unusual_hour"
+      ]
+    },
+    {
+      "transaction_id": "pix_3c775558b365fb7c",
+      "occurred_at": "2026-08-21T01:34:26Z",
+      "sender_id": "acct_0015",
+      "receiver_id": "acct_0205",
+      "amount_brl": 17696.91,
+      "device_id": "dev_0047",
+      "city": "Recife",
+      "account_age_days": 29,
+      "transactions_last_hour": 18,
+      "is_new_device": true,
+      "risk_score": 100,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account",
+        "unusual_hour"
+      ]
+    },
+    {
+      "transaction_id": "pix_7de1bdfed0725b5c",
+      "occurred_at": "2026-08-21T08:21:15Z",
+      "sender_id": "acct_0023",
+      "receiver_id": "acct_0104",
+      "amount_brl": 12024.98,
+      "device_id": "dev_0121",
+      "city": "Belo Horizonte",
+      "account_age_days": 12,
+      "transactions_last_hour": 12,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_71a6014c5f3c44dc",
+      "occurred_at": "2026-08-21T08:43:14Z",
+      "sender_id": "acct_0047",
+      "receiver_id": "acct_0100",
+      "amount_brl": 10051.39,
+      "device_id": "dev_0147",
+      "city": "Rio de Janeiro",
+      "account_age_days": 10,
+      "transactions_last_hour": 17,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_ac48436668bd80d7",
+      "occurred_at": "2026-08-21T09:05:54Z",
+      "sender_id": "acct_0060",
+      "receiver_id": "acct_0208",
+      "amount_brl": 10857.6,
+      "device_id": "dev_0036",
+      "city": "Belo Horizonte",
+      "account_age_days": 5,
+      "transactions_last_hour": 19,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_f97f49941f38df55",
+      "occurred_at": "2026-08-21T10:06:44Z",
+      "sender_id": "acct_0051",
+      "receiver_id": "acct_0144",
+      "amount_brl": 12376.28,
+      "device_id": "dev_0099",
+      "city": "Curitiba",
+      "account_age_days": 17,
+      "transactions_last_hour": 22,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_aa239ba209af9883",
+      "occurred_at": "2026-08-21T10:37:59Z",
+      "sender_id": "acct_0010",
+      "receiver_id": "acct_0180",
+      "amount_brl": 15769.94,
+      "device_id": "dev_0069",
+      "city": "Rio de Janeiro",
+      "account_age_days": 10,
+      "transactions_last_hour": 15,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_d787463d87b8f95c",
+      "occurred_at": "2026-08-21T10:48:10Z",
+      "sender_id": "acct_0030",
+      "receiver_id": "acct_0221",
+      "amount_brl": 10469.53,
+      "device_id": "dev_0114",
+      "city": "Curitiba",
+      "account_age_days": 21,
+      "transactions_last_hour": 18,
+      "is_new_device": true,
+      "risk_score": 95,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account"
+      ]
+    },
+    {
+      "transaction_id": "pix_c3e90323481186e9",
+      "occurred_at": "2026-08-21T02:47:28Z",
+      "sender_id": "acct_0075",
+      "receiver_id": "acct_0193",
+      "amount_brl": 14662.79,
+      "device_id": "dev_0098",
+      "city": "Curitiba",
+      "account_age_days": 33,
+      "transactions_last_hour": 22,
+      "is_new_device": true,
+      "risk_score": 93,
+      "risk_level": "critical",
+      "reasons": [
+        "very_high_amount",
+        "extreme_velocity",
+        "new_device",
+        "unusual_hour"
+      ]
+    },
+    {
+      "transaction_id": "pix_ec5b227cdfde4fbf",
+      "occurred_at": "2026-08-21T02:05:39Z",
+      "sender_id": "acct_0044",
+      "receiver_id": "acct_0100",
+      "amount_brl": 8105.52,
+      "device_id": "dev_0114",
+      "city": "Recife",
+      "account_age_days": 9,
+      "transactions_last_hour": 15,
+      "is_new_device": true,
+      "risk_score": 92,
+      "risk_level": "critical",
+      "reasons": [
+        "high_amount",
+        "extreme_velocity",
+        "new_device",
+        "new_account",
+        "unusual_hour"
+      ]
+    }
+  ]
+}

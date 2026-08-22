@@ -7,7 +7,5 @@ __pycache__/
 build/
 dist/
 .aws-sam/
-data/
-!.gitkeep
+/data/
 .DS_Store
-
