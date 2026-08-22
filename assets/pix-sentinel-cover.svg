@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">PIX Sentinel</title><desc id="desc">Every transaction leaves a signal.</desc>
+  <rect width="1280" height="640" fill="#f0f2e9"/>
+  <g stroke="#17201c" opacity=".13"><path d="M0 80h1280M0 160h1280M0 240h1280M0 320h1280M0 400h1280M0 480h1280M0 560h1280"/><path d="M160 0v640M320 0v640M480 0v640M640 0v640M800 0v640M960 0v640M1120 0v640"/></g>
+  <circle cx="1010" cy="320" r="200" fill="none" stroke="#17201c" stroke-width="2"/><circle cx="1010" cy="320" r="135" fill="none" stroke="#17201c" opacity=".25"/><circle cx="1010" cy="320" r="70" fill="none" stroke="#17201c" opacity=".25"/>
+  <path d="M1010 320V120A200 200 0 0 1 1179 213Z" fill="#b8f229" opacity=".85"/>
+  <circle cx="1087" cy="250" r="9" fill="#ff7043"/><circle cx="918" cy="362" r="9" fill="#ff7043"/><circle cx="1052" cy="412" r="7" fill="#ff7043"/>
+  <text x="70" y="88" font-family="monospace" font-weight="700" font-size="19" fill="#17201c" letter-spacing="4">PIX·SENTINEL</text>
+  <text x="70" y="268" font-family="Arial,sans-serif" font-weight="700" font-size="82" fill="#17201c">Every transaction</text>
+  <text x="70" y="356" font-family="Arial,sans-serif" font-style="italic" font-size="82" fill="#ff7043">leaves a signal.</text>
+  <text x="74" y="426" font-family="monospace" font-size="17" fill="#747d76">STREAMING · RISK ENGINE · AWS</text>
+  <rect x="70" y="515" width="380" height="2" fill="#17201c"/><text x="70" y="555" font-family="monospace" font-size="15" fill="#17201c">GUILHERME VITAL / DATA ENGINEERING</text>
+</svg>
+

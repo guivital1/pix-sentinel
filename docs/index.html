@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Interactive fraud-risk monitor built with synthetic PIX transactions." />
+    <meta property="og:title" content="PIX Sentinel · Real-time risk monitor" />
+    <meta property="og:description" content="An explainable streaming data engineering case study on AWS." />
+    <meta property="og:image" content="og.png" />
+    <title>PIX Sentinel · Risk monitor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="dashboard.css" />
+  </head>
+  <body>
+    <div class="noise"></div>
+    <main>
+      <header class="topbar">
+        <a class="brand" href="#">PIX<span>·</span>SENTINEL</a>
+        <div class="status"><i></i> simulation online</div>
+        <a class="github" href="https://github.com/guivital1/pix-sentinel">view source ↗</a>
+      </header>
+
+      <section class="hero">
+        <div>
+          <p class="eyebrow">REAL-TIME FRAUD INTELLIGENCE</p>
+          <h1>Every transaction<br /><em>leaves a signal.</em></h1>
+          <p class="intro">An explainable risk engine for synthetic PIX events — from stream ingestion to analytical evidence.</p>
+        </div>
+        <div class="radar-card">
+          <div class="radar">
+            <span class="sweep"></span><i class="dot d1"></i><i class="dot d2"></i><i class="dot d3"></i>
+          </div>
+          <div><strong id="radar-alerts">—</strong><small>signals under review</small></div>
+        </div>
+      </section>
+
+      <section class="metrics" aria-label="Pipeline metrics">
+        <article><span>transactions</span><strong id="transactions">—</strong><small>synthetic events</small></article>
+        <article><span>processed volume</span><strong id="volume">—</strong><small>BRL</small></article>
+        <article><span>risk alerts</span><strong id="alerts">—</strong><small>high + critical</small></article>
+        <article><span>average risk</span><strong id="average-risk">—</strong><small>out of 100</small></article>
+      </section>
+
+      <section class="workspace">
+        <article class="panel distribution-panel">
+          <div class="panel-head"><div><span>01</span><h2>Risk distribution</h2></div><small>model output</small></div>
+          <div id="distribution" class="distribution"></div>
+        </article>
+
+        <article class="panel map-panel">
+          <div class="panel-head"><div><span>02</span><h2>Regional signals</h2></div><small>click to filter</small></div>
+          <div id="cities" class="city-grid"></div>
+        </article>
+
+        <article class="panel reasons-panel">
+          <div class="panel-head"><div><span>03</span><h2>Why was it flagged?</h2></div><small>explainable rules</small></div>
+          <div id="reasons" class="reasons"></div>
+        </article>
+
+        <article class="panel alerts-panel">
+          <div class="panel-head"><div><span>04</span><h2>Alert stream</h2></div><button id="reset-filter" hidden>clear filter ×</button></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>transaction</th><th>city</th><th>amount</th><th>score</th><th>signal</th></tr></thead>
+              <tbody id="alert-rows"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="architecture">
+        <p class="eyebrow">SERVERLESS FLOW</p>
+        <div class="flow">
+          <span>synthetic events</span><b>→</b><span>Kinesis</span><b>→</b><span>Lambda</span><b>→</b><span>S3</span><b>→</b><span>Athena</span><b>→</b><span>evidence</span>
+        </div>
+      </section>
+
+      <footer>
+        <span>Built by Guilherme Vital</span>
+        <span>Data Engineering · Machine Learning · AWS</span>
+        <span>100% synthetic data</span>
+      </footer>
+    </main>
+    <script src="dashboard.js"></script>
+  </body>
+</html>
+

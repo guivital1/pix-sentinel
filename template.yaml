@@ -1,0 +1,158 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Cost-controlled streaming pipeline for synthetic PIX transactions.
+
+Parameters:
+  EnableSimulation:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: Explicit kill switch for scheduled event generation.
+  AlertEmail:
+    Type: String
+    Default: ""
+    Description: Optional email for a USD 5 monthly AWS Budget alert.
+
+Conditions:
+  SimulationEnabled: !Equals [!Ref EnableSimulation, "true"]
+  HasAlertEmail: !Not [!Equals [!Ref AlertEmail, ""]]
+
+Globals:
+  Function:
+    Runtime: python3.12
+    Architectures: [arm64]
+    Timeout: 30
+    MemorySize: 256
+    Tracing: Active
+    Environment:
+      Variables:
+        POWERTOOLS_SERVICE_NAME: pix-sentinel
+
+Resources:
+  DataBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    UpdateReplacePolicy: Delete
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      LifecycleConfiguration:
+        Rules:
+          - Id: ExpireSimulationData
+            Status: Enabled
+            ExpirationInDays: 30
+      Tags:
+        - Key: project
+          Value: pix-sentinel
+
+  TransactionStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      StreamModeDetails:
+        StreamMode: PROVISIONED
+      ShardCount: 1
+      RetentionPeriodHours: 24
+      StreamEncryption:
+        EncryptionType: KMS
+        KeyId: alias/aws/kinesis
+      Tags:
+        - Key: project
+          Value: pix-sentinel
+
+  ProducerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: pix_sentinel.aws_handlers.producer_handler
+      Environment:
+        Variables:
+          STREAM_NAME: !Ref TransactionStream
+          BATCH_SIZE: "25"
+      Policies:
+        - KinesisWritePolicy:
+            StreamName: !Ref TransactionStream
+      Events:
+        DemoSchedule:
+          Type: ScheduleV2
+          Properties:
+            ScheduleExpression: rate(5 minutes)
+            State: !If [SimulationEnabled, ENABLED, DISABLED]
+            OmitName: true
+            Description: Controlled synthetic PIX event generator
+
+  ConsumerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: pix_sentinel.aws_handlers.consumer_handler
+      Environment:
+        Variables:
+          DATA_BUCKET: !Ref DataBucket
+      Policies:
+        - S3WritePolicy:
+            BucketName: !Ref DataBucket
+      Events:
+        Stream:
+          Type: Kinesis
+          Properties:
+            Stream: !GetAtt TransactionStream.Arn
+            StartingPosition: LATEST
+            BatchSize: 100
+            MaximumBatchingWindowInSeconds: 10
+            MaximumRetryAttempts: 2
+            BisectBatchOnFunctionError: true
+
+  ConsumerErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: PIX Sentinel consumer errors
+      Namespace: AWS/Lambda
+      MetricName: Errors
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref ConsumerFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  ProjectBudget:
+    Type: AWS::Budgets::Budget
+    Condition: HasAlertEmail
+    Properties:
+      Budget:
+        BudgetName: pix-sentinel-monthly-guardrail
+        BudgetLimit:
+          Amount: 5
+          Unit: USD
+        TimeUnit: MONTHLY
+        BudgetType: COST
+        CostFilters:
+          TagKeyValue:
+            - user:project$pix-sentinel
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            ThresholdType: ABSOLUTE_VALUE
+            Threshold: 2
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref AlertEmail
+
+Outputs:
+  StreamName:
+    Value: !Ref TransactionStream
+  BucketName:
+    Value: !Ref DataBucket
+  SimulationEnabled:
+    Value: !Ref EnableSimulation
