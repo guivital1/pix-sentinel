@@ -4,7 +4,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.11+-3776AB?style=flat-square&amp;logo=python&amp;logoColor=white" alt="Python 3.11+" />
-  <img src="https://img.shields.io/badge/AWS-Kinesis_%C2%B7_Lambda_%C2%B7_S3-FF9900?style=flat-square&amp;logo=amazonwebservices&amp;logoColor=white" alt="AWS" />
+  <img src="https://img.shields.io/badge/AWS-SQS_%C2%B7_Lambda_%C2%B7_S3-FF9900?style=flat-square&amp;logo=amazonwebservices&amp;logoColor=white" alt="AWS" />
   <img src="https://img.shields.io/badge/data-100%25_synthetic-B8F229?style=flat-square" alt="Synthetic data" />
   <img src="https://img.shields.io/badge/cost-kill_switch_on-17201C?style=flat-square" alt="Cost controlled" />
 </p>
@@ -17,12 +17,12 @@
 
 ## What happens inside
 
-PIX Sentinel simulates legitimate and suspicious payment behavior, scores each event with an explainable risk model, and turns the result into analytical evidence. It is designed to demonstrate streaming data engineering without exposing or imitating any real customer data.
+PIX Sentinel simulates legitimate and suspicious payment behavior, scores each event with an explainable risk model, and turns the result into analytical evidence. It demonstrates near-real-time, event-driven data engineering without exposing or imitating any real customer data.
 
 ```mermaid
 flowchart LR
-    G[Synthetic PIX generator] --> K[Kinesis Data Streams]
-    K --> L[Lambda scoring]
+    G[Synthetic PIX generator] --> Q[SQS event queue]
+    Q --> L[Lambda scoring]
     L --> S[(S3 partitioned lake)]
     S --> A[Athena]
     A --> D[Interactive risk monitor]
@@ -58,7 +58,7 @@ ruff check src tests
 
 ## Deploy a controlled AWS demo
 
-The schedule is **disabled by default**. A deployment creates one provisioned Kinesis shard, two small ARM Lambda functions, an encrypted S3 bucket with 30-day expiration, and a CloudWatch error alarm.
+The schedule is **disabled by default**. A deployment creates an encrypted SQS queue with a dead-letter queue, two small ARM Lambda functions, an encrypted S3 bucket with 30-day expiration, and a CloudWatch error alarm.
 
 ```bash
 sam build
@@ -99,7 +99,7 @@ tests/             deterministic unit and infrastructure tests
 - [x] Explainable scoring model
 - [x] Local end-to-end simulation
 - [x] Interactive dashboard
-- [x] Kinesis → Lambda → S3 infrastructure
+- [x] SQS → Lambda → S3 event-driven infrastructure
 - [x] Tests and CI/CD
 - [ ] Controlled AWS deployment and evidence
 - [ ] SageMaker anomaly-model experiment
@@ -108,4 +108,3 @@ tests/             deterministic unit and infrastructure tests
 This project is educational. A risk score is a simulation, not a production fraud decision.
 
 <p align="center"><sub>Built by <a href="https://github.com/guivital1">Guilherme Vital</a> · Data Engineering · Machine Learning · AWS</sub></p>
-

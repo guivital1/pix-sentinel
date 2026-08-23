@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
-Description: Cost-controlled streaming pipeline for synthetic PIX transactions.
+Description: Cost-controlled event-driven pipeline for synthetic PIX transactions.
 
 Parameters:
   EnableSimulation:
@@ -52,16 +52,24 @@ Resources:
         - Key: project
           Value: pix-sentinel
 
-  TransactionStream:
-    Type: AWS::Kinesis::Stream
+  DeadLetterQueue:
+    Type: AWS::SQS::Queue
     Properties:
-      StreamModeDetails:
-        StreamMode: PROVISIONED
-      ShardCount: 1
-      RetentionPeriodHours: 24
-      StreamEncryption:
-        EncryptionType: KMS
-        KeyId: alias/aws/kinesis
+      MessageRetentionPeriod: 345600
+      SqsManagedSseEnabled: true
+      Tags:
+        - Key: project
+          Value: pix-sentinel
+
+  TransactionQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 86400
+      VisibilityTimeout: 180
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt DeadLetterQueue.Arn
+        maxReceiveCount: 3
       Tags:
         - Key: project
           Value: pix-sentinel
@@ -73,15 +81,14 @@ Resources:
       Handler: pix_sentinel.aws_handlers.producer_handler
       Environment:
         Variables:
-          STREAM_NAME: !Ref TransactionStream
+          QUEUE_URL: !Ref TransactionQueue
           BATCH_SIZE: "25"
       Policies:
         - Statement:
             - Effect: Allow
               Action:
-                - kinesis:PutRecord
-                - kinesis:PutRecords
-              Resource: !GetAtt TransactionStream.Arn
+                - sqs:SendMessage
+              Resource: !GetAtt TransactionQueue.Arn
       Events:
         DemoSchedule:
           Type: ScheduleV2
@@ -103,15 +110,14 @@ Resources:
         - S3WritePolicy:
             BucketName: !Ref DataBucket
       Events:
-        Stream:
-          Type: Kinesis
+        Queue:
+          Type: SQS
           Properties:
-            Stream: !GetAtt TransactionStream.Arn
-            StartingPosition: LATEST
-            BatchSize: 100
-            MaximumBatchingWindowInSeconds: 10
-            MaximumRetryAttempts: 2
-            BisectBatchOnFunctionError: true
+            Queue: !GetAtt TransactionQueue.Arn
+            BatchSize: 10
+            MaximumBatchingWindowInSeconds: 5
+            FunctionResponseTypes:
+              - ReportBatchItemFailures
 
   ConsumerErrorAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -154,8 +160,10 @@ Resources:
               Address: !Ref AlertEmail
 
 Outputs:
-  StreamName:
-    Value: !Ref TransactionStream
+  QueueUrl:
+    Value: !Ref TransactionQueue
+  QueueArn:
+    Value: !GetAtt TransactionQueue.Arn
   BucketName:
     Value: !Ref DataBucket
   SimulationEnabled:

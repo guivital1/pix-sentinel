@@ -31,7 +31,7 @@ sam deploy \
   --parameter-overrides EnableSimulation=true AlertEmail=YOUR_EMAIL
 ```
 
-Wait for several batches, then inspect Kinesis monitoring, the Lambda consumer logs, and the `silver/` S3 prefix.
+Wait for several batches, then inspect SQS monitoring, the Lambda consumer logs, and the `silver/` S3 prefix.
 
 ## 4. Query with Athena
 
@@ -46,5 +46,4 @@ aws s3 rm "s3://YOUR_BUCKET" --recursive
 sam delete --stack-name pix-sentinel-dev --region us-east-2
 ```
 
-The S3 bucket must be empty before CloudFormation can remove it. Verify that the stack, stream, functions, log groups, and bucket no longer remain.
-
+The S3 bucket must be empty before CloudFormation can remove it. Verify that the stack, queues, functions, log groups, and bucket no longer remain.

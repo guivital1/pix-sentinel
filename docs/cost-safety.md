@@ -5,7 +5,7 @@ PIX Sentinel is intentionally a short-lived demonstration environment.
 ## Guardrails
 
 - `EnableSimulation=false` is the deployment default.
-- Kinesis uses one provisioned shard and 24-hour retention.
+- SQS uses encrypted queues, 24-hour event retention, and a four-day dead-letter queue.
 - The producer emits only 25 records every five minutes when explicitly enabled.
 - S3 simulation objects expire after 30 days.
 - Lambda uses ARM, 256 MB of memory, and a 30-second timeout.
@@ -21,7 +21,6 @@ Before a demo:
 2. Deploy with the schedule disabled.
 3. Enable the simulation only for the evidence window.
 4. Disable it again and confirm the EventBridge schedule state.
-5. Delete the stack after capturing the Kinesis, Lambda, S3, Athena, and CloudWatch evidence.
+5. Delete the stack after capturing the SQS, Lambda, S3, Athena, and CloudWatch evidence.
 
 Credits reduce the bill but do not stop resources automatically. Always verify the Billing and Cost Management dashboard after teardown.
-
