@@ -76,8 +76,12 @@ Resources:
           STREAM_NAME: !Ref TransactionStream
           BATCH_SIZE: "25"
       Policies:
-        - KinesisWritePolicy:
-            StreamName: !Ref TransactionStream
+        - Statement:
+            - Effect: Allow
+              Action:
+                - kinesis:PutRecord
+                - kinesis:PutRecords
+              Resource: !GetAtt TransactionStream.Arn
       Events:
         DemoSchedule:
           Type: ScheduleV2
