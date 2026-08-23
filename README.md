@@ -93,6 +93,12 @@ tests/             deterministic unit and infrastructure tests
 - **Reproducible:** fixed seeds, infrastructure as code, CI tests, and documented queries.
 - **Portfolio-safe:** the public dashboard contains only generated examples.
 
+## Validated cloud run
+
+On 23 August 2026, a controlled AWS execution published 25 synthetic events to SQS. Lambda consumed all messages in five micro-batches, wrote five hourly-partitioned objects to S3, and completed with zero errors. Athena then returned 25 transactions, BRL 46,470.44 in simulated volume, four alerts, and an average risk score of 17.64. The schedule remained disabled and the environment was removed after the evidence was captured.
+
+See the reproducible [deployment evidence](docs/deployment-evidence.md).
+
 ## Status
 
 - [x] Deterministic event generator
@@ -101,7 +107,7 @@ tests/             deterministic unit and infrastructure tests
 - [x] Interactive dashboard
 - [x] SQS → Lambda → S3 event-driven infrastructure
 - [x] Tests and CI/CD
-- [ ] Controlled AWS deployment and evidence
+- [x] Controlled AWS deployment and evidence
 - [ ] SageMaker anomaly-model experiment
 - [ ] Parquet curation with AWS Glue
 

@@ -26,6 +26,23 @@ Use stack name `pix-sentinel-dev`, region `us-east-2`, and keep `EnableSimulatio
 
 ## 3. Start a short evidence session
 
+The safest option is a single manual producer invocation while the schedule remains disabled:
+
+```bash
+PRODUCER_NAME=$(aws cloudformation describe-stack-resource \
+  --stack-name pix-sentinel-dev \
+  --logical-resource-id ProducerFunction \
+  --query 'StackResourceDetail.PhysicalResourceId' \
+  --output text)
+
+aws lambda invoke \
+  --function-name "$PRODUCER_NAME" \
+  --cli-binary-format raw-in-base64-out \
+  --payload '{}' producer-response.json
+```
+
+Alternatively, a time-boxed scheduled demonstration can be enabled explicitly:
+
 ```bash
 sam deploy \
   --parameter-overrides EnableSimulation=true AlertEmail=YOUR_EMAIL
