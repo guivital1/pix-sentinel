@@ -35,6 +35,7 @@ def score_transaction(transaction: Transaction) -> ScoredTransaction:
         reasons.append("unusual_hour")
 
     score = min(score, 100)
-    level = "critical" if score >= 70 else "high" if score >= 45 else "medium" if score >= 25 else "low"
+    level = (
+        "critical" if score >= 70 else "high" if score >= 45 else "medium" if score >= 25 else "low"
+    )
     return ScoredTransaction(transaction, score, level, tuple(reasons))
-

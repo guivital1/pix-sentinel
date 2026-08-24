@@ -11,4 +11,3 @@ def test_dashboard_assets_and_sample_data_exist() -> None:
     assert "PIX Sentinel" in html
     assert "data/dashboard.json" in script
     assert data["summary"]["transactions"] >= 100
-

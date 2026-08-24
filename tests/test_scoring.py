@@ -45,4 +45,3 @@ def test_suspicious_transaction_is_explainable() -> None:
         "new_account",
         "unusual_hour",
     }
-

@@ -18,3 +18,11 @@ def test_data_has_expiration_policy_and_encryption() -> None:
     assert "PublicAccessBlockConfiguration:" in template
     assert "SqsManagedSseEnabled: true" in template
     assert "DeadLetterQueue" in template
+
+
+def test_operational_alarms_and_dashboard_are_managed_as_code() -> None:
+    template = (ROOT / "template.yaml").read_text(encoding="utf-8")
+    assert "ApproximateAgeOfOldestMessage" in template
+    assert "ApproximateNumberOfMessagesVisible" in template
+    assert "AWS::CloudWatch::Dashboard" in template
+    assert "pix-sentinel-operations" in template

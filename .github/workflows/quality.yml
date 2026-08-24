@@ -19,6 +19,7 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: python -m pip install -e '.[dev,aws]'
-      - run: ruff check src tests
+      - run: ruff check src scripts tests
       - run: pytest
-      - run: python -m compileall -q src tests
+      - run: python scripts/benchmark_stream.py --count 10000 --output artifacts/benchmark.json
+      - run: python -m compileall -q src scripts tests

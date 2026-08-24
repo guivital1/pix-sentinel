@@ -39,6 +39,11 @@ flowchart LR
 
 Scores are capped at 100. Every alert retains the contributing signals, making the decision auditable instead of presenting a black-box prediction.
 
+Every new event also carries a versioned schema contract. The consumer supports
+partial-batch retry, deterministic micro-batch deduplication, DLQ isolation and
+bounded replay. CloudWatch monitors queue age, consumer errors and dead-letter
+messages; see the [reliability runbook](docs/reliability.md).
+
 ## Run it locally
 
 ```bash
@@ -54,6 +59,7 @@ Open [http://localhost:8000](http://localhost:8000). The same random seed always
 ```bash
 pytest
 ruff check src tests
+python scripts/benchmark_stream.py --count 10000
 ```
 
 ## Deploy a controlled AWS demo
@@ -91,6 +97,8 @@ tests/             deterministic unit and infrastructure tests
 - **Explainable first:** risk reasons are stored beside every score.
 - **Cost-aware:** scheduled traffic defaults to off; data expires after 30 days.
 - **Reproducible:** fixed seeds, infrastructure as code, CI tests, and documented queries.
+- **Failure-aware:** schema validation, partial retries, micro-batch deduplication, DLQ alarms and controlled replay.
+- **Observable:** an operations dashboard covers queue age, depth, Lambda duration and errors.
 - **Portfolio-safe:** the public dashboard contains only generated examples.
 
 ## Validated cloud run
@@ -108,6 +116,10 @@ See the reproducible [deployment evidence](docs/deployment-evidence.md).
 - [x] SQS → Lambda → S3 event-driven infrastructure
 - [x] Tests and CI/CD
 - [x] Controlled AWS deployment and evidence
+- [x] Versioned event contract and backwards-compatible consumer
+- [x] Micro-batch idempotency and bounded DLQ replay
+- [x] CloudWatch reliability dashboard and queue/DLQ alarms
+- [x] Deterministic 10,000-event performance benchmark
 - [ ] SageMaker anomaly-model experiment
 - [ ] Parquet curation with AWS Glue
 
