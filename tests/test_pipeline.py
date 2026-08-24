@@ -13,4 +13,3 @@ def test_local_pipeline_builds_dashboard_payload(tmp_path) -> None:
     assert sum(payload["risk_distribution"].values()) == 200
     assert payload["summary"]["alerts"] > 0
     assert len(payload["alerts"]) <= 12
-

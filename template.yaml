@@ -135,6 +135,45 @@ Resources:
       ComparisonOperator: GreaterThanOrEqualToThreshold
       TreatMissingData: notBreaching
 
+  QueueAgeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: Oldest PIX event has waited more than five minutes
+      Namespace: AWS/SQS
+      MetricName: ApproximateAgeOfOldestMessage
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt TransactionQueue.QueueName
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 300
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+
+  DeadLetterAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmDescription: At least one PIX event requires DLQ investigation
+      Namespace: AWS/SQS
+      MetricName: ApproximateNumberOfMessagesVisible
+      Dimensions:
+        - Name: QueueName
+          Value: !GetAtt DeadLetterQueue.QueueName
+      Statistic: Maximum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      TreatMissingData: notBreaching
+
+  OperationsDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: pix-sentinel-operations
+      DashboardBody: !Sub |
+        {"widgets":[{"type":"metric","width":12,"height":6,"properties":{"region":"${AWS::Region}","title":"Queue health","metrics":[["AWS/SQS","ApproximateNumberOfMessagesVisible","QueueName","${TransactionQueue.QueueName}"],[".","ApproximateAgeOfOldestMessage",".","."]] }},{"type":"metric","width":12,"height":6,"properties":{"region":"${AWS::Region}","title":"Consumer reliability","metrics":[["AWS/Lambda","Errors","FunctionName","${ConsumerFunction}"],[".","Duration",".","."]]}}]}
+
   ProjectBudget:
     Type: AWS::Budgets::Budget
     Condition: HasAlertEmail

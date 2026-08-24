@@ -29,7 +29,11 @@ def build_dashboard_payload(scored: list[ScoredTransaction]) -> dict[str, object
         if item.risk_score >= 45:
             metrics["alerts"] = int(metrics["alerts"]) + 1
 
-    alerts = sorted((item for item in scored if item.risk_score >= 45), key=lambda item: item.risk_score, reverse=True)
+    alerts = sorted(
+        (item for item in scored if item.risk_score >= 45),
+        key=lambda item: item.risk_score,
+        reverse=True,
+    )
     return {
         "generated_at": max(item.transaction.occurred_at for item in scored),
         "summary": {
@@ -38,8 +42,12 @@ def build_dashboard_payload(scored: list[ScoredTransaction]) -> dict[str, object
             "alerts": len(alerts),
             "average_risk": round(mean(item.risk_score for item in scored), 1),
         },
-        "risk_distribution": {level: levels.get(level, 0) for level in ("low", "medium", "high", "critical")},
-        "top_reasons": [{"reason": reason, "count": count} for reason, count in reasons.most_common(5)],
+        "risk_distribution": {
+            level: levels.get(level, 0) for level in ("low", "medium", "high", "critical")
+        },
+        "top_reasons": [
+            {"reason": reason, "count": count} for reason, count in reasons.most_common(5)
+        ],
         "cities": [{"city": city, **metrics} for city, metrics in sorted(city_totals.items())],
         "alerts": [item.to_dict() for item in alerts[:12]],
     }
@@ -58,4 +66,3 @@ def run_local_pipeline(count: int, seed: int, output: Path) -> dict[str, object]
     payload = build_dashboard_payload(scored)
     write_json(output, payload)
     return payload
-

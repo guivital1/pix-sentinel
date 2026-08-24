@@ -15,4 +15,3 @@ def test_generator_rejects_empty_batch() -> None:
         assert "greater than zero" in str(error)
     else:
         raise AssertionError("Expected ValueError")
-
